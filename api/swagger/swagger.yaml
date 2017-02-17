@@ -1,0 +1,148 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Electricity Billing
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /chillerRawData:
+    x-swagger-router-controller: chiller
+    get:
+      description: Returns the raw data usage of selected chillers on specific date (month and year)
+      operationId: getChillerRawData
+      parameters:
+        - $ref: "#/parameters/year"
+        - $ref: "#/parameters/month"
+      responses:
+        200:
+          $ref: "#/responses/Success"
+        400:
+          $ref: "#/responses/BadRequestError"
+        401:
+          $ref: "#/responses/AuthenticationError"
+        404:
+          $ref: "#/responses/NotFoundError"
+        500:
+          $ref: "#/responses/InternalServerError"
+  /customer/chiller/schedule:
+    x-swagger-router-controller: chillerSchedule
+    get:
+      description: Returns the customer chiller schedule
+      operationId: getCustomerChillerSchedule
+      parameters:
+        - $ref: "#/parameters/customerNo"
+        - $ref: "#/parameters/month"
+        - $ref: "#/parameters/year"
+      responses:
+        200:
+          $ref: "#/responses/Success"
+        400:
+          $ref: "#/responses/BadRequestError"
+        401:
+          $ref: "#/responses/AuthenticationError"
+        404:
+          $ref: "#/responses/NotFoundError"
+        500:
+          $ref: "#/responses/InternalServerError"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+
+
+parameters:
+  customerNo:
+    in: query
+    name: customerNo
+    decription: An integer customer number
+    type: number
+    require: false
+  month:
+    in: query
+    name: month
+    description: A two digit month value
+    type: string
+    required: true
+  year:
+    in: query
+    name: year
+    description: A four digit year value
+    type: string
+    required: true
+
+responses:
+  Success:
+    description: Success or Info response
+    schema:
+      properties:
+        status:
+          type: number
+        data:
+          type: object
+  BadRequestError:
+    description: Bad request
+    schema:
+      title: Bad Request
+      description: Bad Request
+      required:
+        - error
+      properties:
+        status:
+          type: number
+          example: 400
+        error:
+          type: string
+          example: VALIDATION_ERROR
+  AuthenticationError:
+    description: Authentication Error
+    schema:
+      title: Authentication Error
+      description: Authentication Error
+      required:
+        - error
+      properties:
+        status:
+          type: number
+          example: 401
+        error:
+          type: string
+          example: INVALID_USER
+  NotFoundError:
+    description: Not Found
+    schema:
+      title: Not Found
+      description: Not Found
+      required:
+        - error
+      properties:
+        status:
+          type: number
+          example: 404
+        error:
+          type: string
+          example: NOT_FOUND
+  InternalServerError:
+    description: Internal Server Error
+    schema:
+      title: Internal Server Error
+      description: Internal Server Error
+      required:
+        - error
+      properties:
+        status:
+          type: number
+          example: 500
+        error:
+          type: string
+          example: INTERNAL_SERVER_ERROR

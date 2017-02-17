@@ -1,0 +1,28 @@
+Plot raw data per day
+
+select emid, emdt, emebenergy, emdgenergy from tblemdata 
+where (emid=7 or emid=12)
+and year(emdt)='2016'
+and month(emdt)='01'
+and time(emdt)='00:00:00'
+order by emid,emdt
+
+Plot consumption per day
+**just subtract raw data so consumed same query above
+
+Plot client usage per day
+**get client who has chillers
+select nickname,amount from clienttable where chillers=1
+
+
+
+
+Plot summary of usage per client in a month
+
+
+
+** The raw columns should be customizable with a max of 12 only.
+** Admin to manage the display of usage
+** User can only select what is being defined by the admin on the time for the chiller
+*** i.e. 00-06, 6-8, 8-18, 18-20,20-22, 22-00
+
