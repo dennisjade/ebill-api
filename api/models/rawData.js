@@ -50,11 +50,11 @@ function getChillerByDate(year, month){
           ' and month(emdt)="' + month + '"' +
           formatTimeQuery(formatRows) +
           ' order by emid,emdt';
-        console.log(sql);
+        // console.log(sql);
 
         config.rawConnection().query(sql,
           function (err, rows, fields) {
-            // console.log(groupBy(rows, 'emid')[0].rows);
+            // console.log(groupBy(rows, 'emid'));
             var data = {
               raw: groupBy(rows, 'emid'),
               format : formatRows

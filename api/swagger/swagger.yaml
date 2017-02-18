@@ -65,21 +65,21 @@ parameters:
   customerNo:
     in: query
     name: customerNo
-    decription: An integer customer number
-    type: number
-    require: false
+    description: A two digit month value
+    type: integer
+    required: false
   month:
     in: query
     name: month
     description: A two digit month value
     type: string
-    required: true
+    required: false
   year:
     in: query
     name: year
     description: A four digit year value
     type: string
-    required: true
+    required: false
 
 responses:
   Success:

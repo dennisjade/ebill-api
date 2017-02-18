@@ -7,23 +7,24 @@ module.exports = {
   getCustomerChillerSchedule: getCustomerChillerSchedule
 };
 
-function getCustomerChillerSchedule(){
-  var year = req.swagger.params.year.value || moment().format('YYYY');
-  var month = req.swagger.params.month.value || moment().format('MM');
-  var customerNo = req.swagger.params.month.customerNo || '';
-  var scheduleDate = new Date(year+'-'+month+'-1');
+function getCustomerChillerSchedule(req, res){
+  var params = {
+    year : req.swagger.params.year.value || moment().format('YYYY'),
+    month : req.swagger.params.month.value || moment().format('MM'),
+    customerNo : req.swagger.params.month.customerNo || ''
+  };
 
-  customer.getCustomerChillerSchedule(customerNo, scheduleDate)
+  customer.getCustomerChillerSchedule(params)
     .then(function(response){
-      console.log(response.raw[0].rows);
+      console.log(response);
       res.json({
         status:200,
         data: response
       });
     }).catch(function(err){
-    res.json({
-      status: 500,
-      data: err
-    })
+      res.json({
+        status: 500,
+        data: err
+      })
   });
 }
